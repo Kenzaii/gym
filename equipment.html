@@ -27,66 +27,52 @@
     </header>
 
     <main>
-        <div id="authCheck">
-            <section class="auth-required-section" id="authMessage">
-                <div class="auth-message">
-                    <h2>Members Only Area</h2>
-                    <p>Please log in to access equipment booking.</p>
-                    <div class="auth-buttons">
-                        <a href="./login.html" class="auth-redirect-button">Login</a>
-                        <a href="./register.html" class="auth-redirect-button secondary">Register</a>
-                    </div>
+        <section class="auth-required-section">
+            <div class="auth-message">
+                <h2>Members Only Area</h2>
+                <p>Please log in to access equipment booking.</p>
+                <div class="auth-buttons">
+                    <a href="./login.html" class="auth-redirect-button">Login</a>
+                    <a href="./register.html" class="auth-redirect-button secondary">Register</a>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section class="booking-form" id="bookingSection" style="display: none;">
-                <h2>Equipment Booking</h2>
-                <form id="bookingForm" action="/api/book" method="POST">
-                    <div class="form-group">
-                        <label for="equipment">Select Equipment:</label>
-                        <select id="equipment" name="equipment" required>
-                            <option value="">Choose equipment...</option>
-                            <option value="A1">A1 - Treadmill</option>
-                            <option value="A2">A2 - Elliptical</option>
-                            <option value="B1">B1 - Bench Press</option>
-                        </select>
-                    </div>
+        <section class="booking-form" style="display: none;">
+            <h2>Equipment Booking</h2>
+            <form id="bookingForm" action="/api/book" method="POST">
+                <div class="form-group">
+                    <label for="equipment">Select Equipment:</label>
+                    <select id="equipment" name="equipment" required>
+                        <option value="">Choose equipment...</option>
+                        <option value="A1">A1 - Treadmill</option>
+                        <option value="A2">A2 - Elliptical</option>
+                        <option value="B1">B1 - Bench Press</option>
+                    </select>
+                </div>
 
-                    <div class="form-group">
-                        <label for="date">Date:</label>
-                        <input type="date" id="date" name="date" required>
-                    </div>
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
 
-                    <div class="form-group">
-                        <label for="time">Start Time:</label>
-                        <input type="time" id="time" name="time" required>
-                    </div>
+                <div class="form-group">
+                    <label for="time">Start Time:</label>
+                    <input type="time" id="time" name="time" required>
+                </div>
 
-                    <div class="form-group">
-                        <label for="duration">Duration (minutes):</label>
-                        <select id="duration" name="duration" required>
-                            <option value="15">15 minutes</option>
-                            <option value="30">30 minutes</option>
-                            <option value="45">45 minutes</option>
-                            <option value="60">1 hour</option>
-                        </select>
-                    </div>
+                <div class="form-group">
+                    <label for="duration">Duration (minutes):</label>
+                    <select id="duration" name="duration" required>
+                        <option value="15">15 minutes</option>
+                        <option value="30">30 minutes</option>
+                        <option value="45">45 minutes</option>
+                        <option value="60">1 hour</option>
+                    </select>
+                </div>
 
-                    <div class="form-group">
-                        <label for="pax">Number of People:</label>
-                        <input type="number" id="pax" name="pax" min="1" required>
-                    </div>
-
-                    <button type="submit">Book Equipment</button>
-                </form>
-            </section>
-        </div>
-
-        <section id="qrCodeSection" style="display: none;">
-            <h3>Your Booking QR Code</h3>
-            <div id="qrCode"></div>
-            <button id="downloadQR">Download QR Code</button>
-            <p>A copy of this QR code has been sent to your email.</p>
+                <button type="submit">Book Equipment</button>
+            </form>
         </section>
     </main>
 
@@ -95,32 +81,5 @@
     </footer>
 
     <script src="./js/nav.js"></script>
-    <script>
-        window.onload = function() {
-            checkAuthStatus();
-        };
-
-        function checkAuthStatus() {
-            const isLoggedIn = localStorage.getItem('isLoggedIn');
-            const authMessage = document.getElementById('authMessage');
-            const bookingSection = document.getElementById('bookingSection');
-
-            if (isLoggedIn !== 'true') {
-                authMessage.style.display = 'flex';
-                bookingSection.style.display = 'none';
-            } else {
-                authMessage.style.display = 'none';
-                bookingSection.style.display = 'block';
-            }
-        }
-
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'isLoggedIn') {
-                checkAuthStatus();
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', checkAuthStatus);
-    </script>
 </body>
 </html> 
