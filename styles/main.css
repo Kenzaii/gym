@@ -44,7 +44,11 @@ body {
 
 /* Hero Section */
 .hero-section {
-    background: var(--primary-color);
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('https://assets.website-files.com/621d8b0423efcfa5ba281fb6/621d8b0423efcfa43d282004_image-home-hero-gym-x-template-p-1080.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     color: var(--secondary-color);
     padding: 12rem 2rem;
     text-align: center;
@@ -54,6 +58,21 @@ body {
     justify-content: center;
     padding-top: calc(12rem + 80px);
     margin-top: -80px;
+    position: relative;
+}
+
+/* Add a subtle zoom effect on load */
+@keyframes slowZoom {
+    from {
+        transform: scale(1.1);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+.hero-section {
+    animation: slowZoom 1.5s ease-out forwards;
 }
 
 .hero-content {
@@ -375,5 +394,40 @@ main {
     
     .section-title {
         font-size: 2rem;
+    }
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 1.2rem 2.5rem;
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 2px solid var(--secondary-color);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    margin-top: 2rem;
+}
+
+.cta-button:hover {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+    transform: translateY(-3px);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .cta-button {
+        padding: 1rem 2rem;
+        font-size: 0.9rem;
     }
 } 
