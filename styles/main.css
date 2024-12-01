@@ -598,4 +598,100 @@ main {
         margin: 1rem;
         padding: 1.5rem;
     }
+}
+
+/* Membership Hero Section */
+.membership-hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('https://assets.website-files.com/621d8b0423efcfa5ba281fb6/621d8b0423efcfa43d282004_image-home-hero-gym-x-template-p-1080.jpeg');
+    background-size: cover;
+    background-position: center;
+    color: var(--secondary-color);
+    padding: 8rem 2rem;
+    text-align: center;
+    margin-top: 80px;
+}
+
+.membership-hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.membership-plans {
+    padding: 6rem 2rem;
+    background: var(--gray-color);
+}
+
+/* Enhanced Tier Card Styles */
+.tier-card {
+    background: var(--secondary-color);
+    padding: 3rem 2rem;
+    border-radius: 12px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tier-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.features {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+    text-align: left;
+}
+
+.features li {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.features li::before {
+    content: "✓";
+    color: var(--accent-color);
+    position: absolute;
+    left: 0;
+}
+
+.tier-button {
+    display: inline-block;
+    width: 100%;
+    padding: 1rem 0;
+    background: var(--accent-color);
+    color: var(--secondary-color);
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.tier-button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .membership-hero {
+        margin-top: 60px;
+        padding: 6rem 1rem;
+    }
+
+    .membership-hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .membership-plans {
+        padding: 4rem 1rem;
+    }
+
+    .tier-card {
+        margin-bottom: 2rem;
+    }
 } 
