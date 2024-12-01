@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment Booking - Anytime Refresh</title>
+    <link rel="stylesheet" type="text/css" href="./styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header-dark">
+        <nav>
+            <div class="logo">ANYTIME REFRESH</div>
+            <button class="mobile-menu-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./equipment.html">Equipment</a></li>
+                <li><a href="./membership.html">Membership</a></li>
+                <li><a href="./login.html" class="nav-button">Login</a></li>
+                <li><a href="./register.html" class="nav-button primary">Register</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div id="authCheck">
+            <section class="auth-required-section">
+                <div class="auth-message">
+                    <h2>Members Only Area</h2>
+                    <p>Please log in to access equipment booking.</p>
+                    <div class="auth-buttons">
+                        <a href="./login.html" class="auth-redirect-button">Login</a>
+                        <a href="./register.html" class="auth-redirect-button secondary">Register</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="booking-form" style="display: none;">
+                <h2>Equipment Booking</h2>
+                <form id="bookingForm" action="/api/book" method="POST">
+                    <div class="form-group">
+                        <label for="equipment">Select Equipment:</label>
+                        <select id="equipment" name="equipment" required>
+                            <option value="">Choose equipment...</option>
+                            <option value="A1">A1 - Treadmill</option>
+                            <option value="A2">A2 - Elliptical</option>
+                            <option value="B1">B1 - Bench Press</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="time">Start Time:</label>
+                        <input type="time" id="time" name="time" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="duration">Duration (minutes):</label>
+                        <select id="duration" name="duration" required>
+                            <option value="15">15 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="45">45 minutes</option>
+                            <option value="60">1 hour</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pax">Number of People:</label>
+                        <input type="number" id="pax" name="pax" min="1" required>
+                    </div>
+
+                    <button type="submit">Book Equipment</button>
+                </form>
+            </section>
+        </div>
+
+        <section id="qrCodeSection" style="display: none;">
+            <h3>Your Booking QR Code</h3>
+            <div id="qrCode"></div>
+            <button id="downloadQR">Download QR Code</button>
+            <p>A copy of this QR code has been sent to your email.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Anytime Refresh. All rights reserved.</p>
+    </footer>
+
+    <script src="./js/nav.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const authMessage = document.querySelector('.auth-required-section');
+            const bookingForm = document.querySelector('.booking-form');
+
+            if (isLoggedIn === 'true') {
+                authMessage.style.display = 'none';
+                bookingForm.style.display = 'block';
+            } else {
+                authMessage.style.display = 'block';
+                bookingForm.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html> 
