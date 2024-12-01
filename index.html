@@ -3,55 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitLife Gym</title>
+    <title>Anytime Refresh</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
+    <header class="header-dark">
         <nav>
-            <div class="logo">FitLife Gym</div>
-            <ul>
+            <div class="logo">ANYTIME REFRESH</div>
+            <button class="mobile-menu-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="equipment.html">Equipment Booking</a></li>
+                <li><a href="equipment.html">Equipment</a></li>
                 <li><a href="membership.html">Membership</a></li>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="register.html">Register</a></li>
+                <li><a href="login.html" class="nav-button">Login</a></li>
+                <li><a href="register.html" class="nav-button primary">Register</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <section class="hero">
-            <h1>Welcome to FitLife Gym</h1>
-            <p>Your journey to fitness starts here</p>
-            <a href="register.html" class="cta-button">Join Now</a>
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>TRANSFORM YOUR BODY WITH <span class="highlight">ANYTIME REFRESH</span></h1>
+                <p class="hero-subtitle">Your Ultimate Fitness Journey Starts Here</p>
+                <a href="register.html" class="cta-button">START YOUR JOURNEY</a>
+            </div>
         </section>
 
         <section class="membership-preview">
-            <h2>Membership Tiers</h2>
+            <h2 class="section-title">CHOOSE YOUR <span class="highlight">PLAN</span></h2>
             <div class="tier-container">
-                <div class="tier">
-                    <h3>Basic</h3>
-                    <p>Essential gym access</p>
-                </div>
-                <div class="tier">
-                    <h3>Silver</h3>
-                    <p>Added benefits</p>
-                </div>
-                <div class="tier">
-                    <h3>Gold</h3>
-                    <p>Premium features</p>
-                </div>
-                <div class="tier">
-                    <h3>Platinum</h3>
-                    <p>VIP experience</p>
+                <div class="tier-card">
+                    <h3>BASIC</h3>
+                    <p class="price">$29<span>/month</span></p>
+                    <p class="description">Essential gym access</p>
+                    <a href="#" class="tier-button">Select Plan</a>
                 </div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2024 FitLife Gym. All rights reserved.</p>
+        <p>&copy; 2024 Anytime Refresh. All rights reserved.</p>
     </footer>
+
+    <script src="js/nav.js"></script>
 </body>
 </html>

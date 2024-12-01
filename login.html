@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - FitLife Gym</title>
+    <title>Login - Anytime Refresh</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -12,25 +13,25 @@
     </header>
 
     <main>
-        <section class="login-form">
-            <h2>Login to Your Account</h2>
-            <form id="loginForm" action="/api/login" method="POST">
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit">Login</button>
-                <p>Don't have an account? <a href="register.html">Register here</a></p>
-            </form>
+        <section class="login-section">
+            <div class="login-container">
+                <h2 class="auth-title">WELCOME <span class="highlight">BACK</span></h2>
+                <form id="loginForm" action="/api/login" method="POST" class="auth-form">
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder="Email Address" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="auth-button">LOGIN</button>
+                    <p class="auth-link">Don't have an account? <a href="register.html">Register here</a></p>
+                </form>
+            </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2024 FitLife Gym. All rights reserved.</p>
+        <p>&copy; 2024 Anytime Refresh. All rights reserved.</p>
     </footer>
 </body>
 </html> 
