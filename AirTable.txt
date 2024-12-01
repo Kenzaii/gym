@@ -1,0 +1,52 @@
+API KEY: pat139sD45hTcrgqK.5366c618657ea4e6cc7df110504e2feb0191ce4004dd0272170962555beb3dc0
+BASED_ID: app7an1IZnEt7BC2L
+
+
+Table: Members
+Fields:
+- Member ID *with space* (Primary, Auto-number)
+- Email (Single line text, unique)
+- Full Name *with space* (Single line text)
+- Phone (Phone number)
+- Membership Tier *with space* (Single select)
+  Options: Basic, Silver, Gold, Platinum
+- Join Date *with space* (Date)
+- Status (Single select)
+  Options: Active, Inactive, Suspended
+- Profile Picture *with space* (Attachment)
+
+Table: Equipment
+Fields:
+- Equipment ID *with space* (Single line text, e.g., "A1", "B2")
+- Equipment Name *with space* (Single line text)
+- Category (Single select)
+  Options: Cardio, Strength, Free Weights, etc.
+- Location (Single line text)
+- Status (Single select)
+  Options: Available, Under Maintenance, Reserved
+- Maximum Duration *with space* (Number, in minutes)
+- Equipment Image *with space* (Attachment)
+
+Table: Bookings
+Fields:
+- Booking ID *with space* (Primary, Auto-number)
+- Member (Link to Members table)
+- Equipment (Link to Equipment table)
+- Booking Date *with space* (Date)
+- Start Time *with space* (Time)
+- Duration (Number, in minutes)
+- Number of People *with space* (Number)
+- QR Code *with space* (Attachment or URL)
+- Status (Single select)
+  Options: Confirmed, Checked-in, Completed, Cancelled
+- Created At *with space* (Date & Time)
+
+Table: Membership Tiers
+Fields:
+- Tier Name *with space* (Single line text)
+- Monthly Fee (Currency)
+- Max Booking Duration *with space* (Number, in minutes)
+- Max Advance Bookings *with space* (Number)
+- Benefits (Long text)
+- Peak Hours Access *with space* (Checkbox)
+- Guest Passes *with space* (Number)
