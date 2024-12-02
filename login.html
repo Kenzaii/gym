@@ -8,15 +8,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <!-- Same navigation as index.html -->
+    <header class="header-dark">
+        <nav>
+            <div class="logo">ANYTIME REFRESH</div>
+            <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <div class="nav-wrapper">
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="equipment.html">Equipment</a></li>
+                    <li><a href="membership.html">Membership</a></li>
+                    <li><a href="login.html" class="nav-button">Login</a></li>
+                    <li><a href="register.html" class="nav-button primary">Register</a></li>
+                </ul>
+            </div>
+        </nav>
     </header>
 
     <main>
         <section class="login-section">
             <div class="login-container">
                 <h2 class="auth-title">WELCOME <span class="highlight">BACK</span></h2>
-                <form id="loginForm" action="/api/login" method="POST" class="auth-form">
+                <form id="loginForm" class="auth-form">
                     <div class="form-group">
                         <input type="email" id="email" name="email" placeholder="Email Address" required>
                     </div>
@@ -33,5 +49,11 @@
     <footer>
         <p>&copy; 2024 Anytime Refresh. All rights reserved.</p>
     </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/services/airtableService.js"></script>
+    <script src="js/services/authService.js"></script>
+    <script src="js/navAuth.js"></script>
+    <script src="js/login.js"></script>
 </body>
 </html> 

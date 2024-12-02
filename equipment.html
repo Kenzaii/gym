@@ -11,7 +11,7 @@
     <header class="header-dark">
         <nav>
             <div class="logo">ANYTIME REFRESH</div>
-            <button class="mobile-menu-toggle">
+            <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -81,5 +81,69 @@
     </footer>
 
     <script src="./js/nav.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/services/airtableService.js"></script>
+    <script src="js/services/authService.js"></script>
+    <script src="js/services/bookingService.js"></script>
+    <script src="js/navAuth.js"></script>
+    <script src="js/equipment.js"></script>
+    <script>
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const bookingForm = document.querySelector('.booking-form');
+            const authMessage = document.querySelector('.auth-required-section');
+            
+            if (authService.isAuthenticated()) {
+                bookingForm.style.display = 'block';
+                authMessage.style.display = 'none';
+                
+                // Load available equipment
+                loadEquipment();
+            } else {
+                bookingForm.style.display = 'none';
+                authMessage.style.display = 'block';
+            }
+        });
+
+        async function loadEquipment() {
+            try {
+                const equipment = await bookingService.getAvailableEquipment();
+                const select = document.getElementById('equipment');
+                
+                equipment.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = `${item.fields['Equipment ID']} - ${item.fields['Equipment Name']}`;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading equipment:', error);
+                alert('Error loading equipment');
+            }
+        }
+
+        // Handle booking form submission
+        document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const member = authService.getCurrentMember();
+            const bookingData = {
+                memberId: member.id,
+                equipmentId: document.getElementById('equipment').value,
+                date: document.getElementById('date').value,
+                time: document.getElementById('time').value,
+                duration: document.getElementById('duration').value
+            };
+            
+            try {
+                const booking = await bookingService.createBooking(bookingData);
+                alert('Booking confirmed!');
+                window.location.reload();
+            } catch (error) {
+                console.error('Booking error:', error);
+                alert('Error creating booking');
+            }
+        });
+    </script>
 </body>
 </html> 

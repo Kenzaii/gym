@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - Anytime Refresh</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header-dark">
+        <nav>
+            <div class="logo">ANYTIME REFRESH</div>
+            <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="equipment.html">Equipment</a></li>
+                <li><a href="membership.html">Membership</a></li>
+                <li><a href="account.html" class="nav-button">My Account</a></li>
+                <li><a href="#" id="logoutBtn" class="nav-button primary">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="account-section">
+            <div class="account-container">
+                <h2>My Account</h2>
+                <div class="user-info">
+                    <h3>Welcome, <span id="userName"></span></h3>
+                    <p>Membership Tier: <span id="userTier"></span></p>
+                </div>
+
+                <div class="bookings-section">
+                    <h3>Current Bookings</h3>
+                    <div id="currentBookings" class="bookings-grid"></div>
+
+                    <h3>Past Bookings</h3>
+                    <div id="pastBookings" class="bookings-grid"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Anytime Refresh. All rights reserved.</p>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/services/airtableService.js"></script>
+    <script src="js/services/authService.js"></script>
+    <script src="js/services/bookingService.js"></script>
+    <script src="js/account.js"></script>
+    <script src="js/navAuth.js"></script>
+</body>
+</html> 
