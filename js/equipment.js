@@ -1,13 +1,16 @@
-document.addEventListener('DOMContentLoaded', () => {
-    loadEquipment();
-    
-    const bookingForm = document.getElementById('bookingForm');
-    if (bookingForm) {
-        bookingForm.addEventListener('submit', handleBookingSubmission);
-    }
-});
+document.addEventListener('DOMContentLoaded', async () => {
+    // Check authentication first
+    const member = authService.getCurrentMember();
+    console.log('Auth check:', { member });
 
-async function loadEquipment() {
+    // If not logged in, redirect to login page
+    if (!member || !member.id) {
+        console.log('Unauthorized access, redirecting to login');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // Only continue if user is authenticated
     try {
         console.log('Starting equipment load...');
         const equipment = await bookingService.getAvailableEquipment();
@@ -30,7 +33,6 @@ async function loadEquipment() {
 
         // Add equipment options
         equipment.forEach(item => {
-            // Only show available equipment
             if (item.fields['Status'] === 'Available') {
                 const option = document.createElement('option');
                 option.value = item.id;
@@ -39,12 +41,18 @@ async function loadEquipment() {
             }
         });
 
+        // Add event listener for booking form
+        const bookingForm = document.getElementById('bookingForm');
+        if (bookingForm) {
+            bookingForm.addEventListener('submit', handleBookingSubmission);
+        }
+
         console.log('Equipment loaded successfully');
     } catch (error) {
         console.error('Error in loadEquipment:', error);
         alertUtils.showAlert('Error loading equipment. Please try again.');
     }
-}
+});
 
 async function handleBookingSubmission(e) {
     e.preventDefault();
@@ -52,6 +60,7 @@ async function handleBookingSubmission(e) {
     const member = authService.getCurrentMember();
     if (!member || !member.id) {
         alertUtils.showAlert('Please log in to book equipment');
+        window.location.href = 'login.html';
         return;
     }
 
@@ -87,7 +96,7 @@ async function handleBookingSubmission(e) {
     };
 
     try {
-        console.log('Submitting booking data:', bookingData); // Debug log
+        console.log('Submitting booking data:', bookingData);
         const booking = await bookingService.createBooking(bookingData);
         if (booking && !booking.error) {
             alertUtils.showAlert('Booking created successfully!', 'success');
