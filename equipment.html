@@ -4,75 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Equipment Booking - Anytime Refresh</title>
-    <link rel="stylesheet" type="text/css" href="./styles/main.css">
+    <link rel="stylesheet" href="styles/main.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <header class="header-dark">
         <nav>
-            <div class="logo">ANYTIME REFRESH</div>
+            <div class="logo">
+                <a href="index.html">ANYTIME REFRESH</a>
+            </div>
             <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
             </button>
             <ul class="nav-links">
-                <li><a href="./index.html">Home</a></li>
-                <li><a href="./equipment.html">Equipment</a></li>
-                <li><a href="./membership.html">Membership</a></li>
-                <li><a href="./login.html" class="nav-button">Login</a></li>
-                <li><a href="./register.html" class="nav-button primary">Register</a></li>
+                <!-- Navigation items will be inserted by navAuth.js -->
             </ul>
         </nav>
     </header>
 
     <main>
-        <section class="auth-required-section">
-            <div class="auth-message">
-                <h2>Members Only Area</h2>
-                <p>Please log in to access equipment booking.</p>
-                <div class="auth-buttons">
-                    <a href="./login.html" class="auth-redirect-button">Login</a>
-                    <a href="./register.html" class="auth-redirect-button secondary">Register</a>
+        <section class="booking-section">
+            <div class="section-content">
+                <h2 class="section-title">BOOK YOUR <span class="highlight">EQUIPMENT</span></h2>
+                <div class="booking-container">
+                    <form id="bookingForm" class="booking-form">
+                        <div class="form-group">
+                            <label for="equipmentSelect">Select Equipment</label>
+                            <select id="equipmentSelect" name="equipment" required>
+                                <option value="">Select Equipment</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bookingDate">Date</label>
+                            <input type="date" id="bookingDate" name="bookingDate" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="startTime">Time</label>
+                            <input type="time" id="startTime" name="startTime" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="duration">Duration (minutes)</label>
+                            <select id="duration" name="duration" required>
+                                <option value="15">15 minutes</option>
+                                <option value="30">30 minutes</option>
+                                <option value="45">45 minutes</option>
+                                <option value="60">60 minutes</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="cta-button">BOOK NOW</button>
+                    </form>
                 </div>
             </div>
-        </section>
-
-        <section class="booking-form" style="display: none;">
-            <h2>Equipment Booking</h2>
-            <form id="bookingForm" action="/api/book" method="POST">
-                <div class="form-group">
-                    <label for="equipment">Select Equipment:</label>
-                    <select id="equipment" name="equipment" required>
-                        <option value="">Choose equipment...</option>
-                        <option value="A1">A1 - Treadmill</option>
-                        <option value="A2">A2 - Elliptical</option>
-                        <option value="B1">B1 - Bench Press</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="date">Date:</label>
-                    <input type="date" id="date" name="date" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="time">Start Time:</label>
-                    <input type="time" id="time" name="time" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="duration">Duration (minutes):</label>
-                    <select id="duration" name="duration" required>
-                        <option value="15">15 minutes</option>
-                        <option value="30">30 minutes</option>
-                        <option value="45">45 minutes</option>
-                        <option value="60">1 hour</option>
-                    </select>
-                </div>
-
-                <button type="submit">Book Equipment</button>
-            </form>
         </section>
     </main>
 
@@ -80,70 +68,13 @@
         <p>&copy; 2024 Anytime Refresh. All rights reserved.</p>
     </footer>
 
-    <script src="./js/nav.js"></script>
+    <script src="js/nav.js"></script>
     <script src="js/config.js"></script>
     <script src="js/services/airtableService.js"></script>
     <script src="js/services/authService.js"></script>
     <script src="js/services/bookingService.js"></script>
     <script src="js/navAuth.js"></script>
+    <script src="js/utils/alerts.js"></script>
     <script src="js/equipment.js"></script>
-    <script>
-        // Check authentication on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            const bookingForm = document.querySelector('.booking-form');
-            const authMessage = document.querySelector('.auth-required-section');
-            
-            if (authService.isAuthenticated()) {
-                bookingForm.style.display = 'block';
-                authMessage.style.display = 'none';
-                
-                // Load available equipment
-                loadEquipment();
-            } else {
-                bookingForm.style.display = 'none';
-                authMessage.style.display = 'block';
-            }
-        });
-
-        async function loadEquipment() {
-            try {
-                const equipment = await bookingService.getAvailableEquipment();
-                const select = document.getElementById('equipment');
-                
-                equipment.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.id;
-                    option.textContent = `${item.fields['Equipment ID']} - ${item.fields['Equipment Name']}`;
-                    select.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Error loading equipment:', error);
-                alert('Error loading equipment');
-            }
-        }
-
-        // Handle booking form submission
-        document.getElementById('bookingForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const member = authService.getCurrentMember();
-            const bookingData = {
-                memberId: member.id,
-                equipmentId: document.getElementById('equipment').value,
-                date: document.getElementById('date').value,
-                time: document.getElementById('time').value,
-                duration: document.getElementById('duration').value
-            };
-            
-            try {
-                const booking = await bookingService.createBooking(bookingData);
-                alert('Booking confirmed!');
-                window.location.reload();
-            } catch (error) {
-                console.error('Booking error:', error);
-                alert('Error creating booking');
-            }
-        });
-    </script>
 </body>
 </html> 

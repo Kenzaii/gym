@@ -10,18 +10,16 @@
 <body>
     <header class="header-dark">
         <nav>
-            <div class="logo">ANYTIME REFRESH</div>
+            <div class="logo">
+                <a href="index.html">ANYTIME REFRESH</a>
+            </div>
             <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
             </button>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="equipment.html">Equipment</a></li>
-                <li><a href="membership.html">Membership</a></li>
-                <li><a href="account.html" class="nav-button">My Account</a></li>
-                <li><a href="#" id="logoutBtn" class="nav-button primary">Logout</a></li>
+                <!-- Navigation items will be inserted by navAuth.js -->
             </ul>
         </nav>
     </header>
@@ -44,6 +42,13 @@
                 </div>
             </div>
         </section>
+
+        <div class="account-section">
+            <h2>My Bookings</h2>
+            <div id="bookingsContainer" class="bookings-container">
+                <!-- Bookings will be loaded here -->
+            </div>
+        </div>
     </main>
 
     <footer>
@@ -56,5 +61,6 @@
     <script src="js/services/bookingService.js"></script>
     <script src="js/account.js"></script>
     <script src="js/navAuth.js"></script>
+    <script src="js/utils/alerts.js"></script>
 </body>
 </html> 
