@@ -1,42 +1,35 @@
 const authService = {
     async login(email, password) {
         try {
-            const formula = `AND({Email} = '${email}', {Password} = '${password}')`;
-            const records = await airtableService.fetchRecords(TABLES.MEMBERS, formula);
+            const filterFormula = `AND({Email} = '${email}', {Password} = '${password}')`;
+            const response = await airtableService.fetchRecords('Members', {
+                filterByFormula: filterFormula
+            });
             
-            if (records && records.length > 0) {
-                const member = records[0];
-                const memberData = {
-                    id: member.id,
-                    email: member.fields.Email,
-                    fullName: member.fields['Full Name'],
-                    membershipTier: member.fields['Membership Tier']
-                };
-                
-                localStorage.setItem('currentMember', JSON.stringify(memberData));
-                
-                window.dispatchEvent(new Event('auth-changed'));
-                
-                return true;
+            console.log('Auth response:', response); // Debug log
+            
+            if (!response.records || response.records.length === 0) {
+                throw new Error('Invalid email or password');
             }
-            return false;
+            
+            return response;
         } catch (error) {
-            console.error('Login error:', error);
+            console.error('Auth error:', error);
             throw error;
         }
     },
 
     isAuthenticated() {
-        return localStorage.getItem('currentMember') !== null;
-    },
-
-    logout() {
-        localStorage.removeItem('currentMember');
-        window.dispatchEvent(new Event('auth-changed'));
+        return !!localStorage.getItem('currentMember');
     },
 
     getCurrentMember() {
         const memberData = localStorage.getItem('currentMember');
         return memberData ? JSON.parse(memberData) : null;
+    },
+
+    logout() {
+        localStorage.removeItem('currentMember');
+        window.dispatchEvent(new Event('auth-changed'));
     }
 }; 

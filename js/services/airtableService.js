@@ -1,33 +1,31 @@
-const headers = {
-    'Authorization': `Bearer ${AIRTABLE_CONFIG.API_KEY}`,
-    'Content-Type': 'application/json'
-};
-
-const baseUrl = `${AIRTABLE_CONFIG.API_URL}/${AIRTABLE_CONFIG.BASE_ID}`;
-
 const airtableService = {
-    async fetchRecords(table, formula = null) {
+    baseUrl: 'https://api.airtable.com/v0/app7an1IZnEt7BC2L',
+    apiKey: 'pat139sD45hTcrgqK.5366c618657ea4e6cc7df110504e2feb0191ce4004dd0272170962555beb3dc0',
+
+    async fetchRecords(table, params = {}) {
         try {
-            let url = `${AIRTABLE_CONFIG.API_URL}/${AIRTABLE_CONFIG.BASE_ID}/${table}`;
-            if (formula) {
-                url += `?filterByFormula=${encodeURIComponent(formula)}`;
-            }
+            const queryParams = new URLSearchParams(params).toString();
+            const url = `${this.baseUrl}/${table}${queryParams ? '?' + queryParams : ''}`;
+            
+            console.log('Fetching from URL:', url); // Debug log
             
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${AIRTABLE_CONFIG.API_KEY}`,
+                    'Authorization': `Bearer ${this.apiKey}`,
                     'Content-Type': 'application/json'
                 }
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorData = await response.json();
+                console.error('Airtable error response:', errorData);
+                throw new Error(errorData.error?.message || 'Failed to fetch from Airtable');
             }
 
             const data = await response.json();
-            console.log('Fetched records:', data); // Debug log
-            return data.records;
+            console.log(`Fetched ${table} data:`, data); // Debug log
+            return data;
         } catch (error) {
             console.error('Airtable fetch error:', error);
             throw error;
@@ -36,41 +34,26 @@ const airtableService = {
 
     async createRecord(table, fields) {
         try {
-            const url = `${AIRTABLE_CONFIG.API_URL}/${AIRTABLE_CONFIG.BASE_ID}/${table}`;
-            
+            const url = `${this.baseUrl}/${table}`;
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${AIRTABLE_CONFIG.API_KEY}`,
+                    'Authorization': `Bearer ${this.apiKey}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    records: [{
-                        fields: fields
-                    }]
-                })
+                body: JSON.stringify({ fields })
             });
 
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error('Airtable error response:', errorData);
-                throw new Error(errorData.error.message);
+                throw new Error(errorData.error?.message || 'Failed to create record');
             }
 
-            const data = await response.json();
-            return data.records[0];
+            return await response.json();
         } catch (error) {
             console.error('Airtable create error:', error);
             throw error;
         }
-    },
-
-    async updateRecord(table, recordId, fields) {
-        const response = await fetch(`${baseUrl}/${table}/${recordId}`, {
-            method: 'PATCH',
-            headers,
-            body: JSON.stringify({ fields })
-        });
-        return await response.json();
     }
 };
