@@ -15,31 +15,122 @@ body {
 
 /* Header Styles */
 .header-dark {
-    background: var(--primary-color);
-    padding: 2rem 2rem;
+    background-color: #000;
+    padding: 1rem 0;
     position: fixed;
     width: 100%;
     top: 0;
-    left: 0;
     z-index: 1000;
 }
 
-.nav-links a {
-    color: var(--secondary-color);
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.logo a {
+    color: #fff;
     text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-links li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+/* Navigation Button Styles */
+.nav-links li a.nav-button {
+    display: inline-block;
+    padding: 0.7rem 1.8rem;
+    background: #ff6b6b;
+    color: #fff !important;
+    border-radius: 30px;
     font-weight: 600;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
+    font-size: 0.9rem;
+    border: 2px solid #ff6b6b;
+    transition: all 0.3s ease;
 }
 
-.nav-button {
-    padding: 0.8rem 1.5rem;
-    border-radius: 4px;
-    border: 1px solid var(--secondary-color);
+.nav-links li a.nav-button:hover {
+    background: #ff5252;
+    border-color: #ff5252;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
 }
 
-.nav-button.primary {
-    background: var(--accent-color);
-    border-color: var(--accent-color);
+.nav-links li a.nav-button.logout {
+    background: transparent;
+    border: 2px solid #ff6b6b;
+    color: #ff6b6b !important;
+}
+
+.nav-links li a.nav-button.logout:hover {
+    background: #ff6b6b;
+    color: #fff !important;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+/* Ensure other nav links don't get the button hover effect */
+.nav-links li a:not(.nav-button):hover {
+    color: #ff6b6b;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px 0;
+    background-color: #fff;
+    transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: #000;
+        flex-direction: column;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
 }
 
 /* Hero Section */
@@ -173,27 +264,22 @@ nav {
 }
 
 .nav-links a {
-    position: relative;
-    transition: color 0.3s ease;
-}
-
-.nav-links a:not(.nav-button):after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: -4px;
-    left: 0;
-    background-color: var(--accent-color);
-    transition: width 0.3s ease;
-}
-
-.nav-links a:not(.nav-button):hover:after {
-    width: 100%;
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 .nav-button {
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--secondary-color);
     transition: all 0.3s ease;
+}
+
+.nav-button.primary {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
 }
 
 .nav-button:hover {
@@ -201,18 +287,14 @@ nav {
     border-color: var(--accent-color);
 }
 
-.nav-button.primary:hover {
-    opacity: 0.9;
-}
-
-/* Mobile Menu */
+/* Mobile Menu Styles */
 @media (max-width: 768px) {
     nav {
         padding: 1rem;
     }
 
     .nav-links {
-        display: none; /* You'll need JavaScript to toggle this for mobile menu */
+        display: none;
         position: absolute;
         top: 100%;
         left: 0;
@@ -225,6 +307,10 @@ nav {
 
     .nav-links.active {
         display: flex;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
     }
 }
 
@@ -694,4 +780,255 @@ main {
     .tier-card {
         margin-bottom: 2rem;
     }
+}
+
+/* Account Page Styles */
+.account-section {
+    padding: 4rem 2rem;
+    background: var(--gray-color);
+    min-height: calc(100vh - 80px);
+}
+
+.account-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.user-info {
+    background: var(--secondary-color);
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.bookings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.booking-card {
+    background: var(--secondary-color);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.booking-card h4 {
+    margin: 0 0 1rem 0;
+    color: var(--accent-color);
+}
+
+.booking-details {
+    margin-bottom: 1.5rem;
+}
+
+.booking-details p {
+    margin: 0.5rem 0;
+}
+
+.qr-code-container {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+.qr-code-container img {
+    max-width: 200px;
+    margin: 0 auto;
+}
+
+/* QR Code Modal */
+.qr-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.qr-modal-content {
+    background: var(--secondary-color);
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+.qr-modal-content img {
+    max-width: 200px;
+    margin: 1.5rem 0;
+}
+
+.qr-modal-content button {
+    padding: 0.8rem 2rem;
+    background: var(--accent-color);
+    color: var(--secondary-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: opacity 0.3s ease;
+}
+
+.qr-modal-content button:hover {
+    opacity: 0.9;
+}
+
+/* Add these styles */
+.loading-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    z-index: 1000;
+}
+
+/* Button Styles */
+.button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: var(--accent-color);
+    color: var(--secondary-color);
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.button.secondary {
+    background: transparent;
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+}
+
+.button.large {
+    padding: 1.2rem 2.5rem;
+    font-size: 1.1rem;
+}
+
+.button.small {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+}
+
+/* Form Button Styles */
+button[type="submit"] {
+    width: 100%;
+    padding: 1rem;
+    background: var(--accent-color);
+    color: var(--secondary-color);
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    opacity: 0.9;
+}
+
+/* CTA Button Styles */
+.cta-button {
+    display: inline-block;
+    padding: 1.2rem 2.5rem;
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 2px solid var(--secondary-color);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    margin-top: 2rem;
+}
+
+.cta-button:hover {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+    transform: translateY(-3px);
+}
+
+/* Auth Button Styles */
+.auth-redirect-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: var(--accent-color);
+    color: var(--secondary-color);
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.auth-redirect-button.secondary {
+    background: transparent;
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+}
+
+.auth-redirect-button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* Tier Button Styles */
+.tier-button {
+    display: inline-block;
+    width: 100%;
+    padding: 1rem 0;
+    background: var(--accent-color);
+    color: var(--secondary-color);
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}
+
+.tier-button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* QR Code Button Styles */
+#downloadQR {
+    margin-top: 1rem;
+    padding: 0.8rem 1.5rem;
+    background: var(--accent-color);
+    color: var(--secondary-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    font-weight: 600;
+}
+
+#downloadQR:hover {
+    opacity: 0.9;
 } 
