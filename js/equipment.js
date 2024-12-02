@@ -1,53 +1,48 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    if (authService.isAuthenticated()) {
-        const bookingForm = document.querySelector('.booking-form');
-        const authMessage = document.querySelector('.auth-required-section');
-        
-        if (bookingForm && authMessage) {
-            bookingForm.style.display = 'block';
-            authMessage.style.display = 'none';
-            
-            // Load available equipment
-            await loadEquipment();
-            
-            // Add form submission listener
-            document.getElementById('bookingForm').addEventListener('submit', handleBookingSubmission);
-        }
+document.addEventListener('DOMContentLoaded', () => {
+    loadEquipment();
+    
+    const bookingForm = document.getElementById('bookingForm');
+    if (bookingForm) {
+        bookingForm.addEventListener('submit', handleBookingSubmission);
     }
 });
 
 async function loadEquipment() {
     try {
+        console.log('Starting equipment load...');
         const equipment = await bookingService.getAvailableEquipment();
-        console.log('Raw equipment data:', equipment);
+        console.log('Received equipment:', equipment);
         
-        const select = document.getElementById('equipment');
-        select.innerHTML = '<option value="">Choose equipment...</option>';
-        
-        if (Array.isArray(equipment)) {
-            equipment.forEach(item => {
-                // Debug each equipment item
-                console.log('Processing equipment:', {
-                    recordId: item.id,
-                    fields: item.fields
-                });
-                
-                const option = document.createElement('option');
-                // Use the fields['Equipment ID'] for display but store the record ID as value
-                option.value = item.id; // This should be something like 'recXYZ123'
-                option.textContent = `${item.fields['Equipment ID']} - ${item.fields['Equipment Name']}`;
-                
-                // Also store the Equipment ID for reference
-                option.dataset.equipmentId = item.fields['Equipment ID'];
-                
-                select.appendChild(option);
-            });
-        } else {
-            console.error('Equipment data is not an array:', equipment);
+        const select = document.getElementById('equipmentSelect');
+        if (!select) {
+            console.error('Equipment select element not found');
+            return;
         }
+
+        // Clear existing options
+        select.innerHTML = '<option value="">Select Equipment</option>';
+        
+        if (!equipment || equipment.length === 0) {
+            console.log('No equipment data received');
+            alertUtils.showAlert('No equipment available.');
+            return;
+        }
+
+        // Add equipment options
+        equipment.forEach(item => {
+            // Only show available equipment
+            if (item.fields['Status'] === 'Available') {
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.textContent = `${item.fields['Equipment ID']} - ${item.fields['Equipment Name']} (${item.fields['Category']})`;
+                select.appendChild(option);
+            }
+        });
+
+        console.log('Equipment loaded successfully');
     } catch (error) {
-        console.error('Error loading equipment:', error);
-        alert('Error loading equipment');
+        console.error('Error in loadEquipment:', error);
+        alertUtils.showAlert('Error loading equipment. Please try again.');
     }
 }
 
@@ -55,70 +50,55 @@ async function handleBookingSubmission(e) {
     e.preventDefault();
     
     const member = authService.getCurrentMember();
-    console.log('Current member:', member);
-    
-    if (!member) {
-        alert('Please log in to book equipment');
+    if (!member || !member.id) {
+        alertUtils.showAlert('Please log in to book equipment');
         return;
     }
 
-    const equipmentSelect = document.getElementById('equipment');
-    const selectedOption = equipmentSelect.selectedOptions[0];
-    
-    // Debug selected equipment
-    console.log('Selected option:', {
-        recordId: selectedOption?.value,
-        equipmentId: selectedOption?.dataset.equipmentId,
-        text: selectedOption?.textContent
-    });
+    const equipmentSelect = document.getElementById('equipmentSelect');
+    const bookingDate = document.getElementById('bookingDate').value;
+    const startTime = document.getElementById('startTime').value;
+    const duration = parseInt(document.getElementById('duration').value);
 
-    if (!selectedOption || !selectedOption.value || !selectedOption.value.startsWith('rec')) {
-        alert('Please select a valid equipment');
+    if (!equipmentSelect || !equipmentSelect.value) {
+        alertUtils.showAlert('Please select equipment');
         return;
     }
 
-    const formData = {
-        memberId: member.id,
-        equipmentId: selectedOption.value, // This should now be the Airtable record ID
-        date: document.getElementById('date').value,
-        time: document.getElementById('time').value,
-        duration: document.getElementById('duration').value
+    if (!bookingDate || !startTime || !duration) {
+        alertUtils.showAlert('Please fill in all required fields');
+        return;
+    }
+
+    // Format the datetime for Airtable
+    const [hours, minutes] = startTime.split(':');
+    const bookingDateTime = new Date(bookingDate);
+    bookingDateTime.setHours(parseInt(hours), parseInt(minutes), 0);
+    const formattedStartTime = bookingDateTime.toISOString();
+
+    const bookingData = {
+        'Member': [member.id],
+        'Equipment': [equipmentSelect.value],
+        'Booking Date': bookingDate,
+        'Start Time': formattedStartTime,
+        'Duration': duration,
+        'Number of People': 1,
+        'Status': 'Confirmed'
     };
 
-    console.log('Submitting booking with data:', formData);
-
-    let loadingMessage = null;
-
     try {
-        loadingMessage = document.createElement('div');
-        loadingMessage.textContent = 'Processing booking...';
-        loadingMessage.className = 'loading-message';
-        document.body.appendChild(loadingMessage);
-
-        const booking = await bookingService.createBooking(formData);
-        console.log('Booking response:', booking);
-        
-        if (loadingMessage) {
-            loadingMessage.remove();
-        }
-        
+        console.log('Submitting booking data:', bookingData); // Debug log
+        const booking = await bookingService.createBooking(bookingData);
         if (booking && !booking.error) {
-            // Clear form
-            e.target.reset();
-            alert('Booking confirmed successfully!');
-            
-            // Redirect to account page after a short delay
+            alertUtils.showAlert('Booking created successfully!', 'success');
             setTimeout(() => {
                 window.location.href = 'account.html';
-            }, 3000);
+            }, 2000);
         } else {
             throw new Error(booking.error?.message || 'Failed to create booking');
         }
     } catch (error) {
         console.error('Booking error:', error);
-        alert(`Error creating booking: ${error.message}`);
-        if (loadingMessage) {
-            loadingMessage.remove();
-        }
+        alertUtils.showAlert(`Error creating booking: ${error.message}`);
     }
 } 
