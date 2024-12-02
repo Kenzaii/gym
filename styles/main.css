@@ -11,12 +11,13 @@ body {
     margin: 0;
     padding: 0;
     color: var(--text-color);
+    overflow-x: hidden;
 }
 
 /* Header Styles */
 .header-dark {
     background-color: #000;
-    padding: 1rem 0;
+    padding: 1.5rem 0;
     position: fixed;
     width: 100%;
     top: 0;
@@ -37,6 +38,7 @@ nav {
     text-decoration: none;
     font-size: 1.5rem;
     font-weight: bold;
+    letter-spacing: 1px;
 }
 
 .nav-links {
@@ -44,7 +46,7 @@ nav {
     list-style: none;
     margin: 0;
     padding: 0;
-    gap: 2rem;
+    gap: 2.5rem;
     align-items: center;
 }
 
@@ -52,7 +54,19 @@ nav {
     color: #fff;
     text-decoration: none;
     font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
     transition: color 0.3s ease;
+    text-transform: uppercase;
+}
+
+.nav-links li a:hover {
+    color: #ff6b6b;
+}
+
+/* Ensure content starts below fixed header */
+main {
+    padding-top: 80px; /* Adjust this value based on your header height */
 }
 
 /* Navigation Button Styles */
@@ -100,15 +114,19 @@ nav {
     border: none;
     cursor: pointer;
     padding: 0;
+    width: 30px;
+    height: 24px;
+    position: relative;
+    z-index: 100;
 }
 
-.bar {
+.mobile-menu-toggle .bar {
     display: block;
-    width: 25px;
-    height: 3px;
-    margin: 5px 0;
-    background-color: #fff;
-    transition: transform 0.3s ease;
+    width: 100%;
+    height: 2px;
+    background: #fff;
+    margin: 6px 0;
+    transition: all 0.3s ease;
 }
 
 @media (max-width: 768px) {
@@ -122,14 +140,26 @@ nav {
         top: 100%;
         left: 0;
         right: 0;
-        background-color: #000;
+        background: #000;
         flex-direction: column;
         padding: 1rem;
-        text-align: center;
+        gap: 1rem;
     }
 
     .nav-links.active {
         display: flex;
+    }
+
+    .mobile-menu-toggle.active .bar:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+    }
+
+    .mobile-menu-toggle.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .mobile-menu-toggle.active .bar:nth-child(3) {
+        transform: rotate(-45deg) translate(8px, -8px);
     }
 }
 
@@ -692,15 +722,32 @@ main {
                 url('https://assets.website-files.com/621d8b0423efcfa5ba281fb6/621d8b0423efcfa43d282004_image-home-hero-gym-x-template-p-1080.jpeg');
     background-size: cover;
     background-position: center;
+    height: 50vh;
+    margin-top: -80px;
+    padding-top: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     color: var(--secondary-color);
-    padding: 8rem 2rem;
-    text-align: center;
-    margin-top: 80px;
+    position: relative;
+}
+
+.membership-hero h1,
+.membership-hero p {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    padding: 0;
 }
 
 .membership-hero h1 {
     font-size: 3.5rem;
     font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.membership-hero p {
     margin-bottom: 1rem;
 }
 
@@ -784,61 +831,125 @@ main {
 
 /* Account Page Styles */
 .account-section {
-    padding: 4rem 2rem;
-    background: var(--gray-color);
-    min-height: calc(100vh - 80px);
-}
-
-.account-container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 40px auto;
+    padding: 0 20px;
 }
 
-.user-info {
-    background: var(--secondary-color);
-    padding: 2rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.account-section h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.bookings-grid {
+.bookings-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
-    margin: 2rem 0;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
+    padding: 20px 0;
 }
 
 .booking-card {
-    background: var(--secondary-color);
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.booking-card h4 {
-    margin: 0 0 1rem 0;
-    color: var(--accent-color);
+.booking-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.booking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.booking-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .booking-details {
-    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    color: #555;
 }
 
 .booking-details p {
-    margin: 0.5rem 0;
+    margin: 12px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.qr-code-container {
+.booking-details strong {
+    color: #2c3e50;
+}
+
+/* Status-specific styles */
+.confirmed .status-badge {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.checked-in .status-badge {
+    background-color: #2196F3;
+    color: white;
+}
+
+.completed .status-badge {
+    background-color: #9E9E9E;
+    color: white;
+}
+
+.cancelled .status-badge {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .bookings-container {
+        grid-template-columns: 1fr;
+    }
+
+    .account-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .booking-card {
+        padding: 20px;
+    }
+}
+
+/* No bookings message */
+.no-bookings {
     text-align: center;
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #eee;
-}
-
-.qr-code-container img {
-    max-width: 200px;
-    margin: 0 auto;
+    padding: 40px;
+    color: #666;
+    font-size: 1.1rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    grid-column: 1 / -1;
 }
 
 /* QR Code Modal */
@@ -1031,4 +1142,193 @@ button[type="submit"]:hover {
 
 #downloadQR:hover {
     opacity: 0.9;
+}
+
+/* If there's a line between sections, remove it */
+section {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure no gap between sections */
+.membership-section {
+    margin-top: 80px; /* Adjust based on your header height */
+    padding-top: 0;
+    border-top: none;
+}
+
+/* Remove any horizontal rules if they exist */
+hr {
+    display: none;
+}
+
+/* Loading Spinner Styles */
+.loading-spinner {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #ff6b6b;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-spinner.active {
+    display: flex;
+}
+
+.loading-text {
+    color: #fff;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    position: absolute;
+    top: 60%;
+}
+
+/* Custom Alert Styles */
+.custom-alert {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 500;
+    z-index: 10000;
+    animation: slideIn 0.3s ease-out;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.custom-alert.error {
+    background-color: #ff6b6b;
+    border-left: 5px solid #ff5252;
+}
+
+.custom-alert.success {
+    background-color: #51cf66;
+    border-left: 5px solid #40c057;
+}
+
+.custom-alert.show {
+    display: block;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+.booking-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.booking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.booking-details p {
+    margin: 8px 0;
+}
+
+.no-bookings {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+}
+
+.confirmed .status-badge {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.completed .status-badge {
+    background-color: #2196F3;
+    color: white;
+}
+
+.cancelled .status-badge {
+    background-color: #f44336;
+    color: white;
+}
+
+/* QR Code Styles */
+.qr-code-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid #f0f0f0;
+    text-align: center;
+}
+
+.qr-code-section h4 {
+    font-size: 1rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.qr-code-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 8px;
+    padding: 10px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    display: block;
+}
+
+/* Add hover effect */
+.qr-code-image:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
 } 
