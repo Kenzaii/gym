@@ -16,13 +16,18 @@ function updateNavigation() {
     if (isAuthenticated) {
         navLinks.innerHTML += `
             <li><a href="account.html">MY ACCOUNT</a></li>
-            <li><a href="#" class="nav-button logout" onclick="authService.logout(); return false;">LOGOUT</a></li>
+            <li><a href="#" class="nav-button logout" onclick="handleLogout(); return false;">LOGOUT</a></li>
         `;
     } else {
         navLinks.innerHTML += `
             <li><a href="login.html" class="nav-button">LOGIN</a></li>
         `;
     }
+}
+
+async function handleLogout() {
+    await authService.logout();
+    window.location.href = 'index.html'; // Redirect to home page
 }
 
 // Run on page load
