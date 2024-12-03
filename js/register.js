@@ -4,12 +4,14 @@ document.addEventListener('DOMContentLoaded', () => {
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-
         try {
+            loadingUtils.show();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
             if (password !== confirmPassword) {
                 throw new Error('Passwords do not match');
             }
@@ -30,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Submitting member data:', memberData);
             await authService.register(memberData);
 
-            alertUtils.showAlert('Registration successful! Redirecting to login...', 'success');
+            alertUtils.showAlert('Registration successful! Please login.', 'success');
             setTimeout(() => {
                 window.location.href = 'login.html';
             }, 2000);
@@ -38,6 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Registration error:', error);
             alertUtils.showAlert(error.message || 'Registration failed. Please try again.');
+        } finally {
+            loadingUtils.hide();
         }
     });
 }); 

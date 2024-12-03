@@ -58,6 +58,8 @@ async function handleBookingSubmission(e) {
     e.preventDefault();
     
     try {
+        loadingUtils.show();
+        
         const member = authService.getCurrentMember();
         if (!member || !member.id) {
             alertUtils.showAlert('Please log in to book equipment');
@@ -130,5 +132,7 @@ async function handleBookingSubmission(e) {
     } catch (error) {
         console.error('Booking error:', error);
         alertUtils.showAlert(`Error creating booking: ${error.message}`);
+    } finally {
+        loadingUtils.hide();
     }
 } 

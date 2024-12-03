@@ -10,38 +10,23 @@ document.addEventListener('DOMContentLoaded', () => {
     async function handleLogin(e) {
         e.preventDefault();
         
-        // Show loading indicator
-        const submitButton = loginForm.querySelector('button[type="submit"]');
-        const originalButtonText = submitButton.textContent;
-        submitButton.disabled = true;
-        submitButton.innerHTML = '<span class="spinner"></span> Logging in...';
-        
         try {
+            loadingUtils.show();
+            
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             
             console.log('Login attempt:', { email, password });
             
             const member = await authService.login(email, password);
+            console.log('Login successful:', member);
             
-            if (member) {
-                console.log('Login successful, redirecting...');
-                localStorage.setItem('member', JSON.stringify(member));
-                window.dispatchEvent(new Event('auth-changed'));
-                alertUtils.showAlert('Login successful! Redirecting...', 'success');
-                setTimeout(() => {
-                    window.location.href = 'account.html';
-                }, 1000);
-                return;
-            }
-            
+            window.location.href = 'account.html';
         } catch (error) {
             console.error('Login error:', error);
-            alertUtils.showAlert(error.message || 'Login failed. Please try again.');
+            alertUtils.showAlert(error.message);
         } finally {
-            // Reset button state
-            submitButton.disabled = false;
-            submitButton.textContent = originalButtonText;
+            loadingUtils.hide();
         }
     }
 
