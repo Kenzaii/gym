@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles/main.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="account-page">
     <header class="header-dark">
         <nav>
             <div class="logo">
@@ -24,31 +24,48 @@
         </nav>
     </header>
 
-    <main>
-        <section class="account-section">
-            <div class="account-container">
-                <h2>My Account</h2>
-                <div class="user-info">
-                    <h3>Welcome, <span id="userName"></span></h3>
-                    <p>Membership Tier: <span id="userTier"></span></p>
-                </div>
-
-                <div class="bookings-section">
-                    <h3>Current Bookings</h3>
-                    <div id="currentBookings" class="bookings-grid"></div>
-
-                    <h3>Past Bookings</h3>
-                    <div id="pastBookings" class="bookings-grid"></div>
+    <main class="account-container">
+        <section class="account-header">
+            <div class="profile-section">
+                <div class="profile-info">
+                    <h1>Welcome, <span class="member-name"></span></h1>
+                    <p class="membership-status">Membership: <span class="membership-tier"></span></p>
                 </div>
             </div>
         </section>
 
-        <div class="account-section">
-            <h2>My Bookings</h2>
-            <div id="bookingsContainer" class="bookings-container">
-                <!-- Bookings will be loaded here -->
+        <section class="account-content">
+            <div class="dashboard-grid">
+                <!-- Membership Card -->
+                <div class="dashboard-card membership-card">
+                    <h3>Membership Details</h3>
+                    <div class="card-content">
+                        <p><strong>Member ID:</strong> <span class="member-id"></span></p>
+                        <p><strong>Email:</strong> <span class="member-email"></span></p>
+                        <p><strong>Join Date:</strong> <span class="join-date"></span></p>
+                        <p><strong>Status:</strong> <span class="account-status"></span></p>
+                    </div>
+                </div>
+
+                <!-- Active Bookings Card -->
+                <div class="dashboard-card bookings-card">
+                    <h3>Active Bookings</h3>
+                    <div class="active-bookings-list">
+                        <!-- Bookings will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Quick Actions Card -->
+                <div class="dashboard-card actions-card">
+                    <h3>Quick Actions</h3>
+                    <div class="quick-actions">
+                        <a href="equipment.html" class="action-button">Book Equipment</a>
+                        <a href="membership.html" class="action-button">Upgrade Membership</a>
+                        <button class="action-button logout-btn">Logout</button>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
     </main>
 
     <footer>
