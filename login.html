@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Anytime Refresh</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -42,6 +43,13 @@
         </section>
     </main>
 
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Please wait...</div>
+        </div>
+    </div>
+
     <footer>
         <p>&copy; 2024 Anytime Refresh. All rights reserved.</p>
     </footer>
@@ -52,5 +60,6 @@
     <script src="js/navAuth.js"></script>
     <script src="js/login.js"></script>
     <script src="js/utils/alerts.js"></script>
+    <script src="js/utils/loadingUtils.js"></script>
 </body>
 </html> 
