@@ -20,79 +20,82 @@ const bookingService = {
         }
     },
 
-    async createBooking(bookingData) {
+    async getEquipmentDetails(equipmentId) {
         try {
-            // Generate a unique QR code value
-            const timestamp = Date.now();
-            const randomString = Math.random().toString(36).substr(2, 9);
-            const qrCodeData = `BOOKING-${bookingData.Member[0]}-${timestamp}-${randomString}`;
-            
-            // Add QR code to booking data
-            const bookingWithQR = {
-                ...bookingData,
-                'QR Code': qrCodeData,
-                'Status': 'Confirmed'  // Set initial status
-            };
-
-            // Debug logs
-            console.log('Original booking data:', bookingData);
-            console.log('Generated QR code:', qrCodeData);
-            console.log('Final booking data with QR:', bookingWithQR);
-            
-            const response = await airtableService.createRecord('Bookings', bookingWithQR);
-            
-            // Debug log for response
-            console.log('Airtable create response:', response);
-            
+            console.log('Fetching equipment details for:', equipmentId);
+            const response = await airtableService.fetchRecord('Equipment', equipmentId);
+            console.log('Equipment details:', response);
             return response;
         } catch (error) {
-            console.error('Error creating booking:', error);
-            console.error('Full error details:', {
-                message: error.message,
-                stack: error.stack,
-                data: bookingData
+            console.error('Error fetching equipment details:', error);
+            return null;
+        }
+    },
+
+    async getMemberBookings(memberId) {
+        try {
+            console.log('Fetching bookings for member:', memberId);
+            const response = await airtableService.fetchRecords('Bookings');
+            console.log('Raw bookings response:', response);
+
+            // Filter bookings for the specific member
+            const memberBookings = response.records.filter(booking => {
+                return booking.fields.Member && 
+                       booking.fields.Member[0] === memberId &&
+                       booking.fields.Status !== 'Cancelled';
             });
+
+            console.log('Filtered member bookings:', memberBookings);
+            return memberBookings;
+        } catch (error) {
+            console.error('Error fetching member bookings:', error);
             throw error;
         }
     },
 
-    async getUserBookings(memberId) {
+    async createBooking(bookingData) {
         try {
-            console.log('Fetching bookings for member:', memberId);
-            
-            if (!memberId) {
-                throw new Error('Member ID is required');
-            }
-
-            const response = await airtableService.fetchRecords('Bookings');
-            
-            // Debug log for fetched bookings
-            console.log('Raw bookings response:', response);
-
-            if (!response || !response.records) {
-                throw new Error('Invalid response from Airtable');
-            }
-
-            // Filter bookings for this member
-            const userBookings = response.records.filter(booking => {
-                return booking.fields.Member && 
-                       Array.isArray(booking.fields.Member) && 
-                       booking.fields.Member.includes(memberId);
-            });
-
-            // Debug log for filtered bookings
-            console.log('Filtered bookings:', userBookings);
-            console.log('Number of bookings found:', userBookings.length);
-            
-            // Log QR codes for each booking
-            userBookings.forEach((booking, index) => {
-                console.log(`Booking ${index + 1} QR Code:`, booking.fields['QR Code']);
-            });
-
-            return userBookings;
+            console.log('Creating booking with data:', bookingData);
+            const response = await airtableService.createRecord('Bookings', bookingData);
+            console.log('Booking created:', response);
+            return response;
         } catch (error) {
-            console.error('Detailed booking error:', error);
-            console.error('Error stack:', error.stack);
+            console.error('Error creating booking:', error);
+            throw error;
+        }
+    },
+
+    async updateBooking(bookingId, updateData) {
+        try {
+            console.log('Updating booking:', bookingId, updateData);
+            const response = await airtableService.updateRecord('Bookings', bookingId, updateData);
+            console.log('Booking updated:', response);
+            return response;
+        } catch (error) {
+            console.error('Error updating booking:', error);
+            throw error;
+        }
+    },
+
+    async updateProfilePicture(memberId, file) {
+        try {
+            // Convert file to base64
+            const base64String = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(file);
+            });
+
+            // Update member record with new profile picture
+            const response = await airtableService.updateRecord('Members', memberId, {
+                'Profile Picture': [{
+                    url: base64String
+                }]
+            });
+
+            return response;
+        } catch (error) {
+            console.error('Error updating profile picture:', error);
             throw error;
         }
     }
