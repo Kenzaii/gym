@@ -62,6 +62,7 @@ Fields:
 
 EmailJS Service
 Service ID: service_6uokdkf
-Template ID: template_92sabqj
+Template ID for Booking: template_92sabqj
+Template ID for ForgetPW: template_fl1lsjt
 Public Key: qIicaPHbGpgKaVArk
 Private Key: zfhl46u-fUPo-sNsVs6aJ
