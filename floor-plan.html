@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floor Plan - Anytime Refresh</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header-dark">
+        <nav>
+            <div class="logo">
+                <a href="index.html">ANYTIME REFRESH</a>
+            </div>
+            <ul class="nav-links">
+                <!-- Navigation items will be inserted by navAuth.js -->
+            </ul>
+        </nav>
+    </header>
+
+    <main class="floor-plan-container">
+        <h1>Gym Floor Plan</h1>
+        
+        <div class="time-display">
+            <h2>Current Time: <span id="currentTime"></span></h2>
+            <h3>Date: <span id="currentDate"></span></h3>
+        </div>
+
+        <div class="zones-container">
+            <div class="zone" id="zone1">
+                <h3>Zone 1 - Cardio</h3>
+                <div class="equipment-grid">
+                    <!-- Equipment will be dynamically inserted here -->
+                    <button class="change-status-btn">Change Status</button>
+                </div>
+            </div>
+
+            <div class="zone" id="zone2">
+                <h3>Zone 2 - Strength</h3>
+                <div class="equipment-grid">
+                    <!-- Equipment will be dynamically inserted here -->
+                    <button class="change-status-btn">Change Status</button>
+                </div>
+            </div>
+
+            <div class="zone" id="zone3">
+                <h3>Zone 3 - Free Weights</h3>
+                <div class="equipment-grid">
+                    <!-- Equipment will be dynamically inserted here -->
+                    <button class="change-status-btn">Change Status</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <h3>Status Legend:</h3>
+            <div class="legend-item">
+                <span class="status-dot available"></span> Available
+            </div>
+            <div class="legend-item">
+                <span class="status-dot occupied"></span> Occupied
+            </div>
+            <div class="legend-item">
+                <span class="status-dot maintenance"></span> Maintenance
+            </div>
+        </div>
+    </main>
+
+    <script src="js/config.js"></script>
+    <script src="js/services/airtableService.js"></script>
+    <script src="js/services/authService.js"></script>
+    <script src="js/navAuth.js"></script>
+    <script src="js/floor-plan.js"></script>
+</body>
+</html> 
