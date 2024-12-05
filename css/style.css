@@ -344,3 +344,230 @@ main {
 .cta-button:hover {
     background-color: #2980b9;
 }
+
+.previous-bookings-card {
+    margin-top: 2rem;
+}
+
+.booking-item {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.previous-bookings-list .booking-item {
+    opacity: 0.8;
+}
+
+/* Floor Plan Styles */
+.floor-plan-container {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.time-display {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+}
+
+.time-display h2, 
+.time-display h3 {
+    margin: 0.5rem 0;
+}
+
+#currentDate {
+    color: #666;
+    font-weight: 500;
+}
+
+.zones-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.zone {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.zone h3 {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #3498db;
+}
+
+.equipment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.equipment-item {
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    text-align: center;
+    transition: transform 0.2s;
+    cursor: pointer;
+    position: relative;
+}
+
+.equipment-item:hover {
+    transform: translateY(-2px);
+}
+
+.equipment-item.reserved {
+    background-color: #ffebee;
+    border-color: #ef5350;
+}
+
+.equipment-item.available {
+    background-color: #e8f5e9;
+    border-color: #66bb6a;
+}
+
+.equipment-item.under-maintenance {
+    background-color: #fff3e0;
+    border-color: #ffa726;
+}
+
+.equipment-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.legend {
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.status-dot.available {
+    background-color: #66bb6a;
+}
+
+.status-dot.reserved {
+    background-color: #ef5350;
+}
+
+.status-dot.under-maintenance {
+    background-color: #ffa726;
+}
+
+.change-status-btn {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+.change-status-btn:hover {
+    background-color: #2980b9;
+}
+
+.equipment-item.reserved .change-status-btn {
+    background-color: #e74c3c;
+}
+
+.equipment-item.reserved .change-status-btn:hover {
+    background-color: #c0392b;
+}
+
+.status {
+    font-weight: 500;
+}
+
+.equipment-item.available .status {
+    color: #27ae60;
+}
+
+.equipment-item.reserved .status {
+    color: #e74c3c;
+}
+
+.equipment-item.under-maintenance .status {
+    color: #f39c12;
+}
+
+@media (max-width: 768px) {
+    .zones-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.status-select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+/* Status text colors */
+.equipment-item.available .status {
+    color: #27ae60;
+}
+
+.equipment-item.reserved .status {
+    color: #e74c3c;
+}
+
+.equipment-item.under-maintenance .status {
+    color: #f39c12;
+}
+
+/* Equipment item background colors */
+.equipment-item.available {
+    background-color: #e8f5e9;
+    border-color: #66bb6a;
+}
+
+.equipment-item.reserved {
+    background-color: #ffebee;
+    border-color: #ef5350;
+}
+
+.equipment-item.under-maintenance {
+    background-color: #fff3e0;
+    border-color: #ffa726;
+}
+
+.status-select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
