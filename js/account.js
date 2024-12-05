@@ -336,4 +336,78 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-}); 
+});
+
+async function displayBookings() {
+    try {
+        const member = authService.getCurrentMember();
+        if (!member) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const bookings = await bookingService.getMemberBookings(member.id);
+        const activeBookingsList = document.querySelector('.active-bookings-list');
+        const previousBookingsList = document.querySelector('.previous-bookings-list');
+        
+        if (!bookings || bookings.length === 0) {
+            activeBookingsList.innerHTML = '<p>No bookings found.</p>';
+            previousBookingsList.innerHTML = '<p>No previous bookings found.</p>';
+            return;
+        }
+
+        // Clear existing bookings
+        activeBookingsList.innerHTML = '';
+        previousBookingsList.innerHTML = '';
+
+        const currentDate = new Date();
+        const currentDateTime = currentDate.getTime();
+
+        // Sort bookings by date (newest first)
+        const sortedBookings = bookings.sort((a, b) => {
+            const dateA = new Date(a.fields['Booking Date'] + ' ' + a.fields['Start Time']);
+            const dateB = new Date(b.fields['Booking Date'] + ' ' + b.fields['Start Time']);
+            return dateB - dateA;
+        });
+
+        sortedBookings.forEach(booking => {
+            const bookingDateTime = new Date(booking.fields['Booking Date'] + ' ' + booking.fields['Start Time']).getTime();
+
+            const bookingHtml = `
+                <div class="booking-item">
+                    <h3>${booking.fields['Equipment Name']}</h3>
+                    <p>${booking.fields['Equipment Type']} • Zone ${booking.fields['Zone']}</p>
+                    <p class="booking-id">Booking ID: ${booking.id}</p>
+                    <p>Date: ${new Date(booking.fields['Booking Date']).toLocaleDateString()}</p>
+                    <p>Time: ${booking.fields['Start Time']}</p>
+                    <p>Status: <span class="status-${booking.fields['Status'].toLowerCase()}">${booking.fields['Status']}</span></p>
+                    <div class="qr-code">
+                        <h4>QR Code</h4>
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${booking.id}" alt="Booking QR Code">
+                    </div>
+                </div>
+            `;
+
+            if (bookingDateTime < currentDateTime) {
+                previousBookingsList.innerHTML += bookingHtml;
+            } else {
+                activeBookingsList.innerHTML += bookingHtml;
+            }
+        });
+
+        // Hide "Previous Bookings" section if empty
+        const previousBookingsCard = document.querySelector('.previous-bookings-card');
+        if (previousBookingsList.innerHTML === '') {
+            previousBookingsCard.style.display = 'none';
+        } else {
+            previousBookingsCard.style.display = 'block';
+        }
+
+    } catch (error) {
+        console.error('Error displaying bookings:', error);
+        alertUtils.showAlert('Error loading bookings. Please try again.');
+    }
+}
+
+// Call the function when the page loads
+document.addEventListener('DOMContentLoaded', displayBookings); 
