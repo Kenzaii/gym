@@ -102,5 +102,132 @@ const airtableService = {
             console.error('Airtable update error:', error);
             throw error;
         }
+    },
+
+    async getAllEquipment() {
+        try {
+            console.log('Fetching equipment from URL:', `${this.baseUrl}/Equipment?view=Grid%20view`);
+            
+            const response = await fetch(`${this.baseUrl}/Equipment?view=Grid%20view`, {
+                headers: {
+                    'Authorization': `Bearer ${this.apiKey}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Airtable API error:', errorData);
+                throw new Error(`Failed to fetch equipment: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Fetched equipment data:', data);
+            
+            if (!data.records || data.records.length === 0) {
+                console.log('No equipment records found in Airtable');
+                return [];
+            }
+
+            return data.records;
+        } catch (error) {
+            console.error('Error in getAllEquipment:', error);
+            throw error;
+        }
+    },
+
+    async getBookingsByDate(date) {
+        try {
+            const filterByFormula = encodeURIComponent(`AND(IS_SAME({Booking Date}, '${date}', 'day'), {Status} = 'Confirmed')`);
+            const response = await fetch(`${this.baseUrl}/Bookings?filterByFormula=${filterByFormula}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.apiKey}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch bookings');
+            }
+
+            const data = await response.json();
+            return data.records;
+        } catch (error) {
+            console.error('Error fetching bookings:', error);
+            throw error;
+        }
+    },
+
+    async createBooking(bookingData) {
+        try {
+            console.log('Step 1: Preparing booking data');
+
+            // Generate a temporary ID for the QR code
+            const tempId = Date.now().toString();
+            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=BOOKING-${tempId}`;
+            
+            // Combine the booking data with the QR code
+            const completeBookingData = {
+                records: [{
+                    fields: {
+                        ...bookingData.fields,
+                        'QR Code': qrCodeUrl  // Include QR code URL in initial creation
+                    }
+                }]
+            };
+
+            console.log('Step 2: Sending booking data:', completeBookingData);
+
+            // Create the booking with all data at once
+            const response = await fetch(`${this.baseUrl}/Bookings`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${this.apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(completeBookingData)
+            });
+
+            console.log('Step 3: Response status:', response.status);
+            const responseData = await response.json();
+            console.log('Step 4: Response data:', responseData);
+
+            if (!response.ok) {
+                console.error('Booking creation failed:', responseData);
+                throw new Error('Failed to create booking');
+            }
+
+            return responseData;
+
+        } catch (error) {
+            console.error('Error in createBooking:', error);
+            throw error;
+        }
+    },
+
+    async updateEquipmentStatus(equipmentId, status) {
+        try {
+            const response = await fetch(`${this.baseUrl}/Equipment/${equipmentId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${this.apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    fields: {
+                        'Status': status
+                    }
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update equipment status');
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Error updating equipment status:', error);
+            throw error;
+        }
     }
 };
